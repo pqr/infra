@@ -1,0 +1,28 @@
+[Unit]
+Description=Puma HTTP Server
+After=network.target
+
+# Uncomment for socket activation (see below)
+# Requires=puma.socket
+
+[Service]
+# Foreground process (do not use --daemon in ExecStart or config.rb)
+Type=simple
+
+# Preferably configure a non-privileged user
+User=appuser
+Group=appuser
+
+# Specify the path to your puma application root
+WorkingDirectory=/home/appuser/reddit
+
+# The command to start Puma
+# ExecStart=<WD>/sbin/puma -b tcp://0.0.0.0:9292 -b ssl://0.0.0.0:9293?key=key.pem&cert=cert.pem
+# ExecStart=/usr/local/bin/bundle exec --keep-file-descriptors puma -e production
+ExecStart=/home/appuser/.rvm/wrappers/default/puma -b tcp://0.0.0.0:9292
+ExecStop=/home/appuser/.rvm/wrappers/default/pumactl -S
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
