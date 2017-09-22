@@ -13,7 +13,7 @@
       "zone": "europe-west1-b",
       "ssh_username": "appuser",
       "machine_type": "{{user `machine_type`}}",
-      "image_description": "reddit-app for otus-devops",
+      "image_description": "{{user `source_image`}}, f1-micro, mongodb, ruby, puma, reddit-app",
       "disk_size": 10,
       "disk_type": "pd-standard",
       "network": "default",
