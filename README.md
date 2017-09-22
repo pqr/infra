@@ -26,5 +26,6 @@ terraform show
 terraform output
 terraform output app_external_ip
 terraform taint google_compute_instance.app && terraform apply
+terraform apply -auto-approve=false
 terraform destroy
 ```
