@@ -6,8 +6,25 @@ To start new Google Cloud Platform Instance use following command:
 
 
 Create base image:
-`cd packer && packer build -var 'project_id=week-3-179309' -var 'machine_type=f1-micro' -var 'source_image=ubuntu-1604-xenial-v20170815a' ubuntu16.json`
+`cd packer && packer build -var 'project_id=infra-180708' -var 'machine_type=f1-micro' -var 'source_image=ubuntu-1604-xenial-v20170815a' ubuntu16.json`
 
 
 Create immutable bake image:
-`cd packer && packer build -var 'project_id=week-3-179309' -var 'machine_type=f1-micro' -var 'source_image=ubuntu-1604-xenial-v20170815a' immutable.json`
+`cd packer && packer build -var 'project_id=infra-180708' -var 'machine_type=f1-micro' -var 'source_image=ubuntu-1604-xenial-v20170815a' immutable.json`
+
+To create reddit-app infrastructure using terraform:
+```
+cd terraform
+terraform init
+terraform apply
+```
+
+Usefull terraform commands:
+```
+terraform plan
+terraform show
+terraform output
+terraform output app_external_ip
+terraform taint google_compute_instance.app && terraform apply
+terraform destroy
+```
