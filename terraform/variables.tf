@@ -24,3 +24,8 @@ variable db_disk_image {
   description = "Disk image for reddit db"
   default     = "reddit-db-1506075374"
 }
+
+variable ssh_source_ranges {
+  description = "Allowed IP addresses"
+  default     = ["0.0.0.0/0"]
+}

@@ -21,6 +21,7 @@ terraform apply
 
 Usefull terraform commands:
 ```
+terraform get
 terraform plan
 terraform show
 terraform output
