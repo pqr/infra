@@ -1,0 +1,7 @@
+terraform {
+  backend "gcs" {
+    bucket  = "infra-180708-tf-state-stage"
+    path    = "terraform.tfstate"
+    project = "infra-180708"
+  }
+}

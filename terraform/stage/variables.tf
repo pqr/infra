@@ -1,9 +1,9 @@
 variable project {
-  description = "Project ID"
+  description = "Google Cloud Project ID"
 }
 
 variable region {
-  description = "Region"
+  description = "Google Cloud Region"
   default     = "europe-west1"
 }
 
@@ -12,15 +12,13 @@ variable public_key_path {
 }
 
 variable private_key_path {
-  description = "Path to the private key used for connection provisioners"
+  description = "Path to the private key used for ssh access"
 }
 
 variable app_disk_image {
-  description = "Disk image for reddit app"
-  default     = "reddit-app-1506075690"
+  description = "Disk image with preinstalled Ruby and Puma"
 }
 
 variable db_disk_image {
-  description = "Disk image for reddit db"
-  default     = "reddit-db-1506075374"
+  description = "Disk image with preinstalled MongoDB"
 }

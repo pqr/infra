@@ -1,11 +1,3 @@
-terraform {
-  backend "gcs" {
-    bucket  = "infra-180708-tf-state-prod"
-    path    = "terraform.tfstate"
-    project = "infra-180708"
-  }
-}
-
 provider "google" {
   project = "${var.project}"
   region  = "${var.region}"

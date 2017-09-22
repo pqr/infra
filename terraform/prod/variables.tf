@@ -1,9 +1,9 @@
 variable project {
-  description = "Project ID"
+  description = "Google Cloud Project ID"
 }
 
 variable region {
-  description = "Region"
+  description = "Google Cloud Region"
   default     = "europe-west1"
 }
 
@@ -12,20 +12,18 @@ variable public_key_path {
 }
 
 variable private_key_path {
-  description = "Path to the private key used for connection provisioners"
+  description = "Path to the private key used for ssh access"
 }
 
 variable app_disk_image {
-  description = "Disk image for reddit app"
-  default     = "reddit-app-1506075690"
+  description = "Disk image with preinstalled Ruby and Puma"
 }
 
 variable db_disk_image {
-  description = "Disk image for reddit db"
-  default     = "reddit-db-1506075374"
+  description = "Disk image with preinstalled MongoDB"
 }
 
 variable ssh_source_ranges {
-  description = "Source ranges for SSH firewall"
-  default     = ["31.13.17.20/32"]
+  description = "Source ranges for SSH firewall (better to put here your own client IP, check at myip.com)"
+  default     = ["0.0.0.0/0"]
 }

@@ -2,18 +2,20 @@
   "variables": {
     "project_id": null,
     "source_image_family": "ubuntu-1604-lts",
-    "machine_type": "f1-micro"
+    "machine_type": "f1-micro",
+    "zone": "europe-west1-b",
+    "image_name": "reddit-db"
   },
   "builders": [
     {
       "type": "googlecompute",
       "project_id": "{{user `project_id`}}",
-      "image_name": "reddit-db-{{timestamp}}",
+      "image_name": "{{user `image_name`}}",
       "source_image_family": "{{user `source_image_family`}}",
-      "zone": "europe-west1-b",
+      "zone": "{{user `zone`}}",
       "ssh_username": "appuser",
       "machine_type": "{{user `machine_type`}}",
-      "image_description": "{{user `source_image`}}, MongoDB",
+      "image_description": "{{user `source_image_family`}}, MongoDB",
       "disk_size": 10,
       "disk_type": "pd-standard",
       "network": "default"
