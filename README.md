@@ -14,7 +14,7 @@ Create immutable bake image:
 
 To create reddit-app infrastructure using terraform:
 ```
-cd terraform
+cd terraform/stage
 terraform init
 terraform apply
 ```
@@ -29,4 +29,5 @@ terraform output app_external_ip
 terraform taint google_compute_instance.app && terraform apply
 terraform apply -auto-approve=false
 terraform destroy
+terraform fmt
 ```
