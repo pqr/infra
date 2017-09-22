@@ -26,6 +26,6 @@ variable db_disk_image {
 }
 
 variable ssh_source_ranges {
-  description = "Allowed IP addresses"
-  default     = ["0.0.0.0/0"]
+  description = "Source ranges for SSH firewall"
+  default     = ["31.13.17.20/32"]
 }
