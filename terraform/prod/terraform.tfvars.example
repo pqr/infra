@@ -1,0 +1,6 @@
+project = "infra-180708"
+public_key_path = "~/.ssh/appuser.pub"
+private_key_path = "~/.ssh/appuser"
+db_disk_image = "reddit-db"
+app_disk_image = "reddit-app"
+ssh_source_ranges = ["31.13.17.20/32"];
