@@ -19,28 +19,24 @@ Overview:
 - Clone this repository on your machine 
  
 ## 1. Create base images using Packer
-Enter into `packer` dir:
-```
-cd packer
-```
 
 ### 1.1 Create image with preinstalled MongoDB
 Let us build a base image with preinstalled MongoDB (put your Google Cloud project id as the mandatory variable project_id):
 ```
-packer build -var project_id=<your_google_cloud_project_id> db.json
+packer build -var project_id=<your_google_cloud_project_id> packer/db.json
 ```
 Optionally you can pass a few more parameters to change OS, builder machine type and final image name, full example:
 ```
-packer build -var project_id=<your_google_cloud_project_id> -var source_image_family=ubuntu-1604-lts -var machine_type=g1-small -var zone=europe-west1-c -var image_name=myimage_db db.json
+packer build -var project_id=<your_google_cloud_project_id> -var source_image_family=ubuntu-1604-lts -var machine_type=g1-small -var zone=europe-west1-c -var image_name=myimage_db packer/db.json
 ```
 ### 1.2 Create image with preinstalled Ruby and Puma
 Second image contains Ruby and Puma (put your Google Cloud project id as the mandatory variable project_id):
 ```
-packer build -var project_id=<your_google_cloud_project_id> app.json
+packer build -var project_id=<your_google_cloud_project_id> packer/app.json
 ```
 Optionally you can pass a few more parameters to change OS, builder machine type and final image name, full example:
 ```
-packer build -var project_id=<your_google_cloud_project_id> -var source_image_family=ubuntu-1604-lts -var machine_type=g1-small -var zone=europe-west1-c -var image_name=myimage_app app.json
+packer build -var project_id=<your_google_cloud_project_id> -var source_image_family=ubuntu-1604-lts -var machine_type=g1-small -var zone=europe-west1-c -var image_name=myimage_app packer/app.json
 ```
 
 ## 2. Setup infrastructure with Terraform
@@ -134,6 +130,3 @@ ansible-playbook reddit_app.yml --limit db --tags db-tag
 ansible-playbook reddit_app.yml --limit app --tags app-tag
 ansible-playbook reddit_app.yml --limit app --tags deploy-tag
 ```
-
-
-
