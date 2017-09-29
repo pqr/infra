@@ -93,4 +93,47 @@ terraform init
 terraform apply
 ```
 
-## 3. To be continued...
+## 3. Deploy Reddit application with Ansible
+
+Assume we successfully installed Staging infrastructure using Terraform.
+First we need to know some IP addreeses.
+Enter into `terraform/stage` dir (from root of this repository) and run `terraform show` command:
+```
+cd terraform/stage
+terraform show
+```
+as a result we can see 3 IP addresses:
+```
+Outputs:
+
+app_external_ip = 130.211.97.45
+db_external_ip = 35.195.167.75
+db_internal_ip = 10.132.0.2
+```
+
+Enter into `ansible` dir:
+```
+cd ../../ansible
+```
+
+Edit `hosts` file (located in `ansible` dir): replace external IP addresses for `appserver` and `dbserver` with outputed by terraform.
+In this example `hosts` will look like:
+```
+[app]
+appserver ansible_ssh_host=130.211.97.45
+[db]
+dbserver ansible_ssh_host=35.195.167.75
+```
+
+Next edit `reddit_app.yml` file: replace IP address in variable `db_host` with IP address shown by terraform as `db_internal_ip` (in this example: `db_host: 10.132.0.2`).
+
+
+Run ansible playbooks:
+```
+ansible-playbook reddit_app.yml --limit db --tags db-tag
+ansible-playbook reddit_app.yml --limit app --tags app-tag
+ansible-playbook reddit_app.yml --limit app --tags deploy-tag
+```
+
+
+
