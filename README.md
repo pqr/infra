@@ -14,6 +14,7 @@ Overview:
 - Setup Application Default Credentials: `gcloud auth application-default login`
 - Install Packer: https://www.packer.io
 - Install Terraform: https://www.terraform.io
+- Install Ansible http://docs.ansible.com/ansible/latest/intro_installation.html
 - Optionally create ssh key: `ssh-keygen -t rsa -f ~/.ssh/appuser -C appuser -P ""` (you can skipp this step and yous your existing key)
 - Clone this repository on your machine 
  
