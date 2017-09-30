@@ -14,32 +14,29 @@ Overview:
 - Setup Application Default Credentials: `gcloud auth application-default login`
 - Install Packer: https://www.packer.io
 - Install Terraform: https://www.terraform.io
+- Install Ansible http://docs.ansible.com/ansible/latest/intro_installation.html
 - Optionally create ssh key: `ssh-keygen -t rsa -f ~/.ssh/appuser -C appuser -P ""` (you can skipp this step and yous your existing key)
 - Clone this repository on your machine 
  
 ## 1. Create base images using Packer
-Enter into `packer` dir:
-```
-cd packer
-```
 
 ### 1.1 Create image with preinstalled MongoDB
 Let us build a base image with preinstalled MongoDB (put your Google Cloud project id as the mandatory variable project_id):
 ```
-packer build -var project_id=<your_google_cloud_project_id> db.json
+packer build -var project_id=<your_google_cloud_project_id> packer/db.json
 ```
 Optionally you can pass a few more parameters to change OS, builder machine type and final image name, full example:
 ```
-packer build -var project_id=<your_google_cloud_project_id> -var source_image_family=ubuntu-1604-lts -var machine_type=g1-small -var zone=europe-west1-c -var image_name=myimage_db db.json
+packer build -var project_id=<your_google_cloud_project_id> -var source_image_family=ubuntu-1604-lts -var machine_type=g1-small -var zone=europe-west1-c -var image_name=myimage_db packer/db.json
 ```
 ### 1.2 Create image with preinstalled Ruby and Puma
 Second image contains Ruby and Puma (put your Google Cloud project id as the mandatory variable project_id):
 ```
-packer build -var project_id=<your_google_cloud_project_id> app.json
+packer build -var project_id=<your_google_cloud_project_id> packer/app.json
 ```
 Optionally you can pass a few more parameters to change OS, builder machine type and final image name, full example:
 ```
-packer build -var project_id=<your_google_cloud_project_id> -var source_image_family=ubuntu-1604-lts -var machine_type=g1-small -var zone=europe-west1-c -var image_name=myimage_app app.json
+packer build -var project_id=<your_google_cloud_project_id> -var source_image_family=ubuntu-1604-lts -var machine_type=g1-small -var zone=europe-west1-c -var image_name=myimage_app packer/app.json
 ```
 
 ## 2. Setup infrastructure with Terraform
@@ -92,4 +89,44 @@ terraform init
 terraform apply
 ```
 
-## 3. To be continued...
+## 3. Deploy Reddit application with Ansible
+
+Assume we successfully installed Staging infrastructure using Terraform.
+First we need to know some IP addreeses.
+Enter into `terraform/stage` dir (from root of this repository) and run `terraform show` command:
+```
+cd terraform/stage
+terraform show
+```
+as a result we can see 3 IP addresses:
+```
+Outputs:
+
+app_external_ip = 130.211.97.45
+db_external_ip = 35.195.167.75
+db_internal_ip = 10.132.0.2
+```
+
+Enter into `ansible` dir:
+```
+cd ../../ansible
+```
+
+Edit `hosts` file (located in `ansible` dir): replace external IP addresses for `appserver` and `dbserver` with outputed by terraform.
+In this example `hosts` will look like:
+```
+[app]
+appserver ansible_ssh_host=130.211.97.45
+[db]
+dbserver ansible_ssh_host=35.195.167.75
+```
+
+Next edit `reddit_app.yml` file: replace IP address in variable `db_host` with IP address shown by terraform as `db_internal_ip` (in this example: `db_host: 10.132.0.2`).
+
+
+Run ansible playbooks:
+```
+ansible-playbook reddit_app.yml --limit db --tags db-tag
+ansible-playbook reddit_app.yml --limit app --tags app-tag
+ansible-playbook reddit_app.yml --limit app --tags deploy-tag
+```
