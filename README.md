@@ -124,6 +124,11 @@ dbserver ansible_ssh_host=35.195.167.75
 Next edit `environments/stage/group_vars/app` file: replace IP address in variable `db_host` with IP address shown by terraform as `db_internal_ip` (in this example: `db_host: 10.132.0.2`).
 
 
+Then install roles used in playbooks with `ansible-galaxy` utility:
+```
+ansible-galaxy install -r requirements.yml
+```
+
 Run ansible playbooks to deploy on **stage** environment:
 ```
 ansible-playbook site.yml --check
