@@ -112,7 +112,7 @@ Enter into `ansible` dir:
 cd ../../ansible
 ```
 
-Edit `hosts` file (located in `ansible` dir): replace external IP addresses for `appserver` and `dbserver` with outputed by terraform.
+Edit `environments/stage/hosts` file (path relative to `ansible` dir): replace external IP addresses for `appserver` and `dbserver` with outputed by terraform.
 In this example `hosts` will look like:
 ```
 [app]
@@ -121,12 +121,21 @@ appserver ansible_ssh_host=130.211.97.45
 dbserver ansible_ssh_host=35.195.167.75
 ```
 
-Next edit `reddit_app.yml` file: replace IP address in variable `db_host` with IP address shown by terraform as `db_internal_ip` (in this example: `db_host: 10.132.0.2`).
+Next edit `environments/stage/group_vars/app` file: replace IP address in variable `db_host` with IP address shown by terraform as `db_internal_ip` (in this example: `db_host: 10.132.0.2`).
 
 
-Run ansible playbooks:
+Run ansible playbooks to deploy on **stage** environment:
 ```
-ansible-playbook reddit_app.yml --limit db --tags db-tag
-ansible-playbook reddit_app.yml --limit app --tags app-tag
-ansible-playbook reddit_app.yml --limit app --tags deploy-tag
+ansible-playbook site.yml --check
+ansible-playbook site.yml
+```
+
+To deploy on **prod** environment, do the same steps:
+1. Don't forget to destroy Staging infrastructure first using `terraform destroy` command from `terraform/stage` dir
+2. Install Production infrastructure using `terraform apply -auto-approve=false` command from `terraform/prod` dir
+3. Copy ip addresses outputed by terraform into `environments/prod/hosts` and `environments/prod/group_vars/app` (as we did it in stage example)
+4. Run ansible playbook with explicit environment (from `ansible` dir): 
+```
+ansible-playbook -i environments/prod/hosts site.yml --check
+ansible-playbook -i environments/prod/hosts site.yml
 ```
