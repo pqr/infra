@@ -1,7 +1,12 @@
 ---
-- name: Configure application
+- name: Configure application with nginx reverse proxy
   hosts: app
   become: true
 
   roles:
+    - role: jdauphant.nginx
+      nginx_sites:
+        redditapp:
+          - listen 80
+          - location / { proxy_pass http://localhost:9292; }
     - app
