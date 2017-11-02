@@ -1,0 +1,8 @@
+# Setup and configure mongodb for reddit app
+- name: "Reddit App: Install and configure mongodb service"
+  hosts: all
+  gather_facts: no
+  become: yes
+
+  roles:
+    - db
