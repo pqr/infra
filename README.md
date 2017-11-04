@@ -144,3 +144,25 @@ To deploy on **prod** environment, do the same steps:
 ansible-playbook -i environments/prod/hosts site.yml --check
 ansible-playbook -i environments/prod/hosts site.yml
 ```
+
+## 4. Test Ansible playbooks with Molecule and Testinfra
+
+### 4.1 Preparation steps (setup with virtualenv)
+
+It's better to use Molecule within local Python environment using `virtualenv`.
+1. Install `virtualenv`: http://docs.python-guide.org/en/latest/dev/virtualenvs/
+2. Enter into `ansible` directory in this repository: `cd ansible`
+3. Create virtual environment here: `virtualenv .`
+4. Activate virtual environment: `source bin/activate`
+5. Install Ansible 2.3, Molecule and Testinfra into current virtual environment `pip install -r requirements.txt`
+6. Check Molecule version: `molecule --version` - should be 2.1.0
+7. Check Ansible version `ansible --version` - should be 2.3.2.0
+
+### 4.2 Actual testing Ansible playbooks
+```
+cd roles/db
+molecule init scenario --scenario-name default -r db -d vagrant
+molecule create
+molecule converge
+molecule verify
+```

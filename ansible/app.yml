@@ -1,12 +1,13 @@
 ---
 - name: Configure application with nginx reverse proxy
   hosts: app
+  gather_facts: false
   become: true
 
+  pre_tasks:
+    - name: Install python for Ansible
+      raw: test -e /usr/bin/python || (apt -y update && apt install -y python-minimal)
+      changed_when: false
+
   roles:
-    - role: jdauphant.nginx
-      nginx_sites:
-        redditapp:
-          - listen 80
-          - location / { proxy_pass http://localhost:9292; }
     - app
